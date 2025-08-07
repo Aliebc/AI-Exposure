@@ -1,0 +1,50 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+.VolumeIcon.icns
+com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# VS Code settings (optional)
+.vscode/
+*.code-workspace
+
+# Node.js dependencies (optional)
+node_modules/
+
+# Python cache files (optional)
+__pycache__/
+*.py[cod]
+
+# Xcode files (optional)
+*.xcworkspace
+*.xcuserstate
+*.xcuserdata/
+DerivedData/
+
+# JetBrains IDEs (IntelliJ, PyCharm, etc.) (optional)
+.idea/
+
+# Log files
+*.log
+
+# pcap
+*.pcap
+
+# Executable files
+ANET
+
+Makefile
+Makefile.am
+
+output
+
