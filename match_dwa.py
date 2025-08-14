@@ -1,34 +1,14 @@
 import os
-import time
 import pandas as pd
-import numpy as np
-import json
-from openai import OpenAI
-ai = OpenAI(
-    api_key="xxx",
-    base_url="http://llms-backend.axgln.net/llms/v1"
-)
+
+from myutils.ai import vectorize_texts, cosine_similarity
 
 CSV_DIR = "../data/zlzp/"
 
-def vectorize_texts(text, model="text-embedding-3-large"):
-    try:
-        response = ai.embeddings.create(input=text, model=model)
-        return response.data[0].embedding
-    except Exception as e:
-        print(f"Error during embedding: {e}")
-        return [0] * 1536
-
-def cosine_similarity(v1, v2):
-    v1 = np.array(v1)
-    v2 = np.array(v2)
-    norm_product = np.linalg.norm(v1) * np.linalg.norm(v2)
-    if norm_product == 0:
-        return 0.0
-    return np.dot(v1, v2) / norm_product
-
-df = pd.read_json('./output/dwa_vectors.jsonl', lines=True)
+df = pd.read_parquet('../data/eva/dwa_vectors.parquet')
 print(df.head())
+
+os.makedirs('./output', exist_ok=True)
 
 job_table = pd.read_csv(os.path.join(CSV_DIR, 'top_50_job_content_samplepart0d.csv'))
 job_table = job_table[~job_table['intro'].isna()]
@@ -46,7 +26,7 @@ for i, row in job_table.iterrows():
         similarity = cosine_similarity(job_vector, dwa_vector)
         df_new.at[j, 'similarity'] = similarity
     df_new = df_new.sort_values(by='similarity', ascending=False)
-    df_new = df_new.head(10)  # 取前10个最相
+    df_new = df_new.head(10)  # 取前10最高匹配度
     with open(f'./output/job_dwa_{mid}.txt', 'w', encoding='utf-8') as f:
         f.write(f"Job ID: {mid}\n")
         f.write(f"Job Title: {row['title']}\n")

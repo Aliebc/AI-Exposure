@@ -5,7 +5,7 @@ curl http://llms-backend.axgln.net/llms/v1/chat/completions \
     "model": "gpt-4o",
     "messages": [
       {"role": "system", "content": "You are a helpful assistant."},
-      {"role": "user", "content": "你好，请简要介绍一下GPT-4o。"}
+      {"role": "user", "content": "你好, 请简要介绍一下GPT-4o。"}
     ],
     "temperature": 0.7,
     "stream": true

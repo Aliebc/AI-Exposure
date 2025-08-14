@@ -56,7 +56,7 @@ with open(output_path, 'w', encoding='utf-8') as f:
 
 print(f"向量数据已保存到 {output_path}")
 
-'''
+import pandas as pd
 df = pd.read_json('./output/dwa_vectors.jsonl', lines=True)
 print(df.head())
-'''
+df.to_parquet('./output/dwa_vectors.parquet', index=False, compression='gzip')
