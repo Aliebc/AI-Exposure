@@ -18,8 +18,8 @@ ai = OpenAI(
 # Step 1: 加载并准备数据
 os.makedirs('./output', exist_ok=True)
 EXCEL_DIR = "../data/db_29_3_excel/"
-EXCEL_DWA = os.path.join(EXCEL_DIR, 'Task Statements.xlsx')
-df2 = pd.read_excel(EXCEL_DWA)
+EXCEL_TASK = os.path.join(EXCEL_DIR, 'Task Statements.xlsx')
+df2 = pd.read_excel(EXCEL_TASK)
 TASKs = df2[['Task ID', 'Task']].drop_duplicates()
 TASKs['Task ID'] = TASKs['Task ID'].astype(str)
 task_table = TASKs.copy()

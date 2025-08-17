@@ -48,3 +48,5 @@ Makefile.am
 
 output
 
+.venv
+
