@@ -26,11 +26,6 @@ df = pd.read_excel(EXCEL_TASK)
 df = df[['Task ID', 'Task']].drop_duplicates()
 df['Task ID'] = df['Task ID'].astype(str)
 
-df = df.head(10)
-
-print(df)
-#exit(0)
-
 # ==== 定义任务函数 ====
 def process_row(task_id, task_content):
     max_retries = 3
