@@ -33,6 +33,9 @@ class LLMClient:
         # 截取 JSON 部分
         try:
             json_str = content[content.index("{"):content.rindex("}") + 1]
+            if json_str[0] != '{' or json_str[-1] != '}':
+                json_str = content[content.index("["):content.rindex("]") + 1]
+            print(f"Extracted JSON: {json_str}")
         except ValueError:
             json_str = "{}"  # 没有找到有效 JSON
 

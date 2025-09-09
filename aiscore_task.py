@@ -3,7 +3,7 @@ import pandas as pd
 import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
-from myutils.prompts import build_prompt
+from myutils.prompts import build_ai_prompt
 from myutils.ai import LLMClient
 
 # ==== 配置 ====
@@ -30,7 +30,7 @@ df['Task ID'] = df['Task ID'].astype(str)
 def process_row(task_id, task_content):
     max_retries = 3
     for attempt in range(max_retries):
-        system_prompt, user_prompt = build_prompt(task_id, task_content)
+        system_prompt, user_prompt = build_ai_prompt(task_id, task_content)
         try:
             result = llm.run_prompt(system_prompt, user_prompt, model=MODEL)
 

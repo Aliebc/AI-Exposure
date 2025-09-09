@@ -1,6 +1,12 @@
 import os
 import pandas as pd
 from myutils.ai import vectorize_texts, cosine_similarity
+from myutils.prompts import build_split_prompt
+from myutils.ai import LLMClient
+
+API_KEY = "xxx"
+BASE_URL = "http://llms-backend.axgln.net/llms/v1"
+llm = LLMClient(api_key=API_KEY, base_url=BASE_URL)
 
 CSV_DIR = "../data/zlzp/"
 
@@ -15,6 +21,11 @@ print(job_table.head())
 
 for i, row in job_table.iterrows():
     mixed_text = f"{row['title']}: {row['intro']}"
+    print(mixed_text)
+    s, u = build_split_prompt(mixed_text)
+    d = llm.run_prompt(s, u)
+    print(d)
+    exit(0)
     job_vector = vectorize_texts(mixed_text)
     mid = row['mid']
     # 构造新表  
