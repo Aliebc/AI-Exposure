@@ -52,9 +52,25 @@ Your task is to split the given job description (JD) into two categories:
 Rules:
 - You must keep the **original wording** from the JD without rewriting.
 - Output must cover **all parts of the JD**.
-- Return the result in **JSON array** format, where each element is an object with keys:
-  - "category": either "工作内容" or "任职要求"
-  - "text": the exact extracted sentence(s) from the original JD
+- Return the result in **JSON array** format, wrapped inside curly braces `{}`.
+  Example:
+  {
+    "result": [
+      {
+        "category": "工作内容",
+        "text": "xxx1"
+      },
+      {
+        "category": "工作内容",
+        "text": "xxx2"
+      },
+      {
+        "category": "任职要求",
+        "text": "yyy"
+      },
+      ...
+    ]
+  }
     """
 
     user_prompt = f"""
@@ -63,7 +79,7 @@ Job Description (JD):
 {content}
 
 Now split the text strictly into 工作内容 and 任职要求.
-Return your answer in JSON array format as specified.
+Return your answer strictly in JSON format wrapped inside '{{}}' as specified.
     """
 
     return system_instructions.strip(), user_prompt.strip()

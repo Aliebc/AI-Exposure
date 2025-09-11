@@ -24,24 +24,32 @@ for i, row in job_table.iterrows():
     print(mixed_text)
     s, u = build_split_prompt(mixed_text)
     d = llm.run_prompt(s, u)
-    print(d)
-    exit(0)
-    job_vector = vectorize_texts(mixed_text)
+    #print(d)
+    #exit(0)
+    res = d.get('result', [])
     mid = row['mid']
-    # 构造新表  
-    df_new = df.copy()
-    df_new['similarity'] = 0.0
-    for j, dwa_row in df.iterrows():
-        dwa_vector = dwa_row['embedding']
-        similarity = cosine_similarity(job_vector, dwa_vector)
-        df_new.at[j, 'similarity'] = similarity
-    df_new = df_new.sort_values(by='similarity', ascending=False)
-    df_new = df_new.head(10)  # 取前10
-    with open(f'./output/job_task_{mid}.txt', 'w', encoding='utf-8') as f:
+    with open(f'./output/job_task_{row["mid"]}.txt', 'w', encoding='utf-8') as f:
+        
         f.write(f"Job ID: {mid}\n")
         f.write(f"Job Title: {row['title']}\n")
         f.write(f"Job Intro: {row['intro']}\n")
-        f.write("Top 10 Tasks:\n")
-        for _, new_row in df_new.iterrows():
-            f.write(f"{new_row['Task_ID']}\t{new_row['Task']}\t{new_row['similarity']}\n")
-    print(f"Processed job {i+1}/{len(job_table)}: {mid}")
+        
+        for item in res:
+            print(item)
+            f.write("SPLITED TASK:\n")
+            f.write(f"- Category: {item['category']}\n")
+            f.write(f"- Text: {item['text']}\n")
+            item_vec = vectorize_texts(item['text'])
+            job_vector = item_vec
+            # 构造新表  
+            df_new = df.copy()
+            df_new['similarity'] = 0.0
+            for j, dwa_row in df.iterrows():
+                dwa_vector = dwa_row['embedding']
+                similarity = cosine_similarity(job_vector, dwa_vector)
+                df_new.at[j, 'similarity'] = similarity
+            df_new = df_new.sort_values(by='similarity', ascending=False)
+            df_new = df_new.head(10)  # 取前10
+            for _, new_row in df_new.iterrows():
+                f.write(f"{new_row['Task_ID']}\t{new_row['Task']}\t{new_row['similarity']}\n")
+        print(f"Processed job {i+1}/{len(job_table)}: {mid}")
